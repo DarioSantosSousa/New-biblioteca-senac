@@ -1,0 +1,34 @@
+@using Microsoft.AspNetCore.Http;
+@model Usuario
+
+<h1 class="text-center">Criar novo usuário</h1>
+
+<div class="row justify-content-md-center">
+  <form asp-action="RegistrarUsuario" class="col-md-4" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+      <label asp-for="Nome">Nome:</label>
+      <input class="form-control text-center" type="text" name="Nome" id="Nome"  required>
+    </div>
+
+    <div class="form-group">
+      <label asp-for="login">E-mail:</label>
+      <input class="form-control text-center" type="text" name="login" id="userLogin"  required>
+    </div>
+
+    <div class="form-group">
+      <label asp-for="senha">Senha:</label>
+      <input class="form-control text-center" type="text" name="senha" id="userSenha"  required>
+    </div>
+
+    <select name="tipo" id="userTipo">
+      @if (Context.Session.GetInt32("tipo") == 0)
+      {
+        <option value="@Usuario.ADMIN">Administrador</option>
+      }
+      <option value="@Usuario.PADRAO">Padrão</option>
+    </select>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+    <input type="submit" class="btn btn-primary" value="Registrar!">
+  </form>
+</div>

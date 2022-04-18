@@ -1,0 +1,14 @@
+@using Microsoft.AspNetCore.Http;
+<h1 class="text-center">O cadastro foi realizado com sucesso!</h1>
+@if (Context.Session.GetString("login") != null)
+{ 
+    <h5 class="text-center">
+        <a class="text-center" href="/Usuario/ListarUsuario">Clique aqui para ir para lista de usuários!</a>
+    </h5>
+}
+else
+{
+    <h5 class="text-center">
+        <a class="text-center" href="/Home/Login">Ir para página de Login ?</a>
+    </h5>
+}

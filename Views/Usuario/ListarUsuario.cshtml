@@ -1,0 +1,46 @@
+@model List<Usuario>
+
+<h1 class="text-center">Lista de usuários</h1>
+
+<h2 class="text-center  text-danger">ATENÇÃO</h2>
+<h5 class="text-center  text-danger">A exclusão de usuários é um processo irreversível!</h5>
+
+<p class="text-danger"> @ViewData["Mensagem"]</p>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered border-primary">
+            <thead>
+                <tr>
+                    <th scope="row">ID</th>
+                    <th scope="row">Nome</th>
+                    <th scope="row">Login</th>
+                    <th scope="row">Tipo</th>
+                    <th scope="row">Ação I</th>
+                    <th scope="row">Ação II</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Usuario u in Model)
+                {
+                    <tr>
+                        <td>@u.Id</td>
+                        <td>@u.Nome</td>
+                        <td>@u.login</td>
+                        @if (u.tipo == Usuario.ADMIN)
+                        {
+                            <td>Administrador</td>
+                        }
+                        else
+                        {
+                            <td>Padrão</td>
+                        }
+                        <td><a href="editarUsuario?id=@u.Id"><i class="far fa-edit" style="font-size: 30px; color: #000;"></i></a></td>
+                        <td><a href="ExcluirUsuario?id=@u.Id"><i class="far fa-trash-alt" style="font-size: 30px; color: #000;"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

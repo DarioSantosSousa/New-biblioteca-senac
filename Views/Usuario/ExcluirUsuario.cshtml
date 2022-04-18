@@ -1,0 +1,18 @@
+@using Microsoft.AspNetCore.Http;
+@model Usuario
+
+<h1 class="text-danger text-center">ATENÇÃO!</h1>
+<H2 class="text-center">Tem certeza que deseja excluir o usuário "@Model.Nome" ?</h3>
+<p class="text-danger text-center">A exclusão é um processo irreversivel</p>
+
+    <div class="row justify-content-md-center">
+        <form class="col-md-4" action="Excluirusuario" method="post">
+            <input class="form-control text-center" type="hidden" name="id" value="@Model.Id" />
+            <br />
+            <input class="form-control text-center" name="decisao" type="submit" value="CANCELAR" />
+            <br />
+            <br />
+            <br />
+            <input class="form-control text-center" name="decisao" type="submit" value="EXCLUIR" />
+        </form>
+        <div class="form-group">
