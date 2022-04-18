@@ -6,15 +6,18 @@ using System;
 
 namespace Biblioteca.Controllers
 {
-    
+
     public class EmprestimoController : Controller
     {
         public IActionResult Cadastro()
         {
+            Autenticacao.CheckLogin(this);
+
             LivroService livroService = new LivroService();
             EmprestimoService emprestimoService = new EmprestimoService();
 
             CadEmprestimoViewModel cadModel = new CadEmprestimoViewModel();
+
             cadModel.Livros = livroService.ListarTodos();
             return View(cadModel);
         }
@@ -23,8 +26,8 @@ namespace Biblioteca.Controllers
         public IActionResult Cadastro(CadEmprestimoViewModel viewModel)
         {
             EmprestimoService emprestimoService = new EmprestimoService();
-            
-            if(viewModel.Emprestimo.Id == 0)
+
+            if (viewModel.Emprestimo.Id == 0)
             {
                 emprestimoService.Inserir(viewModel.Emprestimo);
             }
@@ -37,28 +40,42 @@ namespace Biblioteca.Controllers
 
         public IActionResult Listagem(string tipoFiltro, string filtro)
         {
+            Autenticacao.CheckLogin(this);
             FiltrosEmprestimos objFiltro = null;
-            if(!string.IsNullOrEmpty(filtro))
+
+            if (!string.IsNullOrEmpty(filtro))
             {
                 objFiltro = new FiltrosEmprestimos();
                 objFiltro.Filtro = filtro;
                 objFiltro.TipoFiltro = tipoFiltro;
             }
+
             EmprestimoService emprestimoService = new EmprestimoService();
             return View(emprestimoService.ListarTodos(objFiltro));
         }
 
         public IActionResult Edicao(int id)
         {
+            //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            Autenticacao.CheckLogin(this);//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                                     Autenticacao.verificaSeUsuarioeAdmin(this);//XXXXXXXXXXXXXXXXXXXXXXXX
+                                          //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
             LivroService livroService = new LivroService();
             EmprestimoService em = new EmprestimoService();
             Emprestimo e = em.ObterPorId(id);
 
             CadEmprestimoViewModel cadModel = new CadEmprestimoViewModel();
-            cadModel.Livros = livroService.ListarTodos();
+            cadModel.Livros = livroService.ListarDisponiveis();
+            cadModel.Livros.Add(livroService.ObterPorId(e.LivroId));
             cadModel.Emprestimo = e;
-            
             return View(cadModel);
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
